@@ -1,0 +1,30 @@
+# Тестирование команд этапа 4
+echo "=== Тест улучшенного ls ==="
+ls
+ls /home
+
+echo "=== Тест навигации ==="
+pwd
+cd home/user
+pwd
+ls
+cd documents
+ls
+cd ../..
+
+echo "=== Тест команды find ==="
+find / -name "*.txt"
+find / -name "*.log"
+find home -name "*.md"
+find . -name "report*"
+
+echo "=== Тест обработки ошибок ==="
+find invalid -name "*"
+cd /nonexistent
+ls /invalid/path
+
+echo "=== Тест переменных окружения ==="
+echo "Пользователь: $USER"
+echo "Путь: $PATH"
+
+echo "=== Тест завершен ==="

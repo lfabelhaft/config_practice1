@@ -1,0 +1,10 @@
+# Тест VFS
+echo "Тестирование VFS"
+ls
+cd home
+ls
+cd user/documents
+ls
+cd /
+vfs-init
+ls

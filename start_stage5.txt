@@ -1,0 +1,34 @@
+# Тестирование команд этапа 5
+echo "=== Тест команды chmod ==="
+ls -la /home/user/documents
+chmod 755 /home/user/documents/readme.txt
+ls -la /home/user/documents
+chmod 600 /home/user/documents/script.sh
+ls -la /home/user/documents
+
+echo "=== Тест команды cp ==="
+ls /tmp
+cp /home/user/documents/readme.txt /tmp/
+cp /home/user/documents/readme.txt /tmp/readme_backup.txt
+ls /tmp
+cp /home/user/documents/script.sh /tmp/
+ls /tmp
+
+echo "=== Тест копирования директорий ==="
+cp /home/user/documents /tmp/documents_backup
+ls /tmp
+ls /tmp/documents_backup
+
+echo "=== Тест обработки ошибок ==="
+chmod 755 /nonexistent/file
+cp /invalid/source /tmp/dest
+cp /home/user/documents /home/user/documents  # копирование в себя
+
+echo "=== Комбинированный тест ==="
+cd /tmp
+find . -name "*.txt"
+find . -name "*.sh"
+chmod 644 readme.txt
+ls -la
+
+echo "=== Тест завершен ==="

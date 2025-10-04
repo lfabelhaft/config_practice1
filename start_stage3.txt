@@ -1,0 +1,6 @@
+ls /
+cd /home/user
+ls
+vfs-init
+ls /
+exit

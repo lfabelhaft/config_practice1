@@ -1,0 +1,35 @@
+{
+  "type": "dir",
+  "mode": "rwxr-xr-x",
+  "children": {
+    "home": {
+      "type": "dir",
+      "mode": "rwxr-xr-x",
+      "children": {
+        "user": {
+          "type": "dir",
+          "mode": "rwxr-xr-x",
+          "children": {
+            "documents": {
+              "type": "dir",
+              "mode": "rwxr-xr-x",
+              "children": {
+                "file.txt": {
+                  "type": "file",
+                  "mode": "rw-r--r--",
+                  "content": "Пример файла"
+                },
+                "binary.bin": {
+                  "type": "file",
+                  "mode": "rw-r--r--",
+                  "encoding": "base64",
+                  "content": "Qk2uAAAAAAAAADYAAAAoAAAAAQAAAAEAAAABABgAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
