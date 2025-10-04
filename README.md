@@ -51,73 +51,94 @@ project/
 --script путь к стартовому скрипту команд
 --debug (опционально) включает отладочный вывод параметров
 
-4. Команды для сборки и запуска
-   Запуск REPL (этап 1):
-   python stage1.py
-   
-   Запуск с конфигурацией и скриптом (этап 2): 
-   python stage2.py --start-script start_script.txt
-   
-   Запуск с VFS и командами (этап 3 и далее):
-   python stage3.py --vfs-path vfs.json --start-script start_script2.txt
-   Этап 4
-   python stage4.py --start-script start_stage4.txt
-   Этап 5
-   python stage5.py --start-script start_stage5.txt
 
-5. Примеры использования
-Пример 1. Интерактивный режим
+ Описание этапов разработки
 
-$ python3 stage1.py
+Этап 1. REPL — базовый прототип
+ • Консольное приложение с циклом ввод → обработка → вывод.
+ • Поддерживаются команды-заглушки: ls, cd, exit.
+ • Парсер подставляет переменные окружения ($HOME, $USER).
+ • Выводит ошибки при неизвестных командах.
+
+Запуск:
+
+python3 stage1.py
+
+Пример сессии:
+
 VFS> ls
 Команда: ls, аргументы: []
 VFS> cd /home
 Команда: cd, аргументы: ['/home']
-VFS> echo $HOME
-/Users/leah
 VFS> exit
 Выход из эмулятора.
 
-Пример 2. Работа с VFS
 
-$ python3 stage3_vfs.py --vfs ./vfs.json
-[DEBUG] Загрузка виртуальной файловой системы...
-VFS> ls /home/user
-file1.txt
-file2.txt
-VFS> find file1.txt
-/home/user/file1.txt
+Этап 2. Конфигурация
+ • Добавлены параметры командной строки:
+ • --vfs <путь> — путь к виртуальной файловой системе (JSON);
+ • --script <путь> — путь к стартовому скрипту команд.
+ • Эмулятор может выполнять команды из файла.
+ • Поддерживаются комментарии в скриптах (# комментарий).
 
-Пример 3. Стартовый скрипт
+Пример запуска:
 
-start_script.txt
+python3 stage2.py --vfs ./vfs.json --script ./start_script2.txt
 
+Фрагмент скрипта:
+
+# Тест базовых команд
 ls
 cd /home/user
-echo $USER
+echo $HOME
 exit
 
-Запуск:
+Этап 3. Виртуальная файловая система (VFS)
+ • Загружается из vfs.json в оперативную память.
+ • Поддерживаются команды:
+ • vfs-init — сброс VFS к состоянию по умолчанию.
+ • ls, cd — навигация по структуре VFS.
+ • Все данные хранятся в памяти, без реальных файловых операций.
 
-python3 stage2_config.py --vfs ./vfs.json --script ./start_script.txt
+Пример VFS (vfs.json):
 
-Вывод:
+{
+  "root": {
+    "home": {
+      "user": {
+        "docs": {
+          "readme.txt": "Hello from VFS!"
+        }
+      }
+    },
+    "bin": {},
+    "tmp": {}
+  }
+}
 
-[DEBUG] VFS path: ./vfs.json
-[DEBUG] Script path: ./start_script.txt
-VFS> ls
-Команда: ls, аргументы: []
-VFS> cd /home/user
-Команда: cd, аргументы: ['/home/user']
+
+Этап 4. Основные команды UNIX
+
+Добавлены:
+ • echo [текст] — вывод строки (с подстановкой переменных);
+ • find [имя] — поиск файлов/папок в текущем каталоге и подкаталогах.
+
+Пример запуска:
+
+python3 stage4.py --vfs ./vfs.json --script ./start_script4.txt
+
+Пример работы:
+
 VFS> echo $USER
 leah
-VFS> exit
-Выход из эмулятора.
+VFS> find readme.txt
+/root/home/user/docs/readme.txt
 
-6. Тестирование
 
-Можно создать дополнительные скрипты:
 
-scripts/
-├── make_vfs.sh
-└── vfs_minimal.sh
+Этап 5. Дополнительные команды
+
+Реализованы команды, модифицирующие состояние VFS в памяти:
+ • chmod [путь] [права] — изменение прав доступа (эмуляция);
+ • cp [источник] [назначение] — копирование файла или каталога....
+
